@@ -1,0 +1,113 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>test</title>
+		<style type="text/css">
+			*{margin:0px;padding:0px;}
+			.box{box-shadow:3px 10px 10px #666;width:300px;height:150px;border:pink solid 1px;position:absolute;}
+			.box .title{height:30px;background:#000;color:#fff;line-height:30px;padding-left:10px;}
+			.box .content{height:100px;}
+			.box .btn{height:30px;background:#000;}
+			.box .btn a{padding:0px 10px;background:pink;color:#fff;line-height:30px;text-decoration:none;float:right;margin-right:10px;}
+			.box .btn a:hover{background:linear-gradient(10deg,#141414,red);}
+
+			.tip{position:absolute;top:100px;left:100px;}
+			.tip ul li{float:right;margin:10px;background:#23b232;list-style:none;border:red solid 1px;}
+			.tip ul li a{padding:10px;text-decoration:none;color:#fff;}
+
+			.tip_box{position:absolute;display:none;background:#000;height:30px;width:300px;color:#fff;line-height:30px;padding-left:10px;}
+			.tip_box .san{
+			    position:absolute;
+			    top:30px;
+				left:10px;
+				width:0px;
+				height:0px;
+				border-top:10px solid red;
+				border-right:10px solid transparent;
+				border-bottom:10px solid transparent;
+				border-left:10px solid transparent;}
+		</style>
+	</head>
+	<body>
+		<a href="#" class="dian">点击</a>
+		
+		<div class="tip">
+			<ul>
+				<li>
+					<a href="#">tip1</a>
+				</li>
+				<li>
+					<a href="#">tip1</a>
+				</li>
+				<li>
+					<a href="#">tip1</a>
+				</li>
+			</ul>
+		</div>
+			
+		<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$(".tip ul li").mouseover(function(){
+					$("body").append("<div class=\"tip_box\">"+
+						"			<div class=\"content\">内容是什么</div>"+
+						"			<div class=\"san\"></div>"+
+						"		</div>");
+					var top=$(this).offset().top-40;
+					var left=$(this).offset().left-10;
+					//alert(top+"--"+left);
+					$(".tip_box").css({"display":"block","top":top,"left":left});
+				}).mouseout(function(){
+					$(".tip_box").remove();
+				});
+			});
+
+
+			(function($){
+				$.fn.box=function(option){
+					var opt=$.extend({},$.fn.box.defaults,option);
+					this.each(function(){
+						$(this).click(function(){
+							init(opt,$(this));
+						})
+					});
+				}
+				function init(opt,obj){
+					$("body").append("<div class=\"box\">"+
+									"			<div class=\"title\">提示</div>"+
+									"			<div class=\"content\">内容</div>"+
+									"			<div class=\"btn\">"+
+									"				<a href=\"#\">确定</a>"+
+									"				<a href=\"#\">取消</a>"+
+									"			</div>"+
+									"		</div>");
+					centers($(".box"));
+					$(window).resize(function(){
+						centers($(".box"));
+					});
+				}
+				$.fn.box.defaults={
+					title:"提示",
+					width:"300",
+					height:"500",
+					cllaback:function(ok){}
+				}
+
+				function centers(obj){
+					var ww=$(window).width();
+					var hh=$(window).height();
+					var ow=obj.width();
+					var oh=obj.height();
+					var left = (ww-ow)/2;
+					var top=(hh-oh)/2;
+					obj.css({top:top,left:left});
+				}
+			})(jQuery);
+
+			$(function(){
+				$(".dian").box({});
+			})
+		</script>
+	</body>
+</html>
